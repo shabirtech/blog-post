@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+
+{% block body %}
+<script>
+    $(document).ready(function() {
+        $('#id_title').on('input', function() { 
+            var title = $(this).val();
+            if (title.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "validate_title" %}', 
+                    data: { title: title, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                    success: function(data) {
+                        if (data.valid) {
+                            $('#title-validation-msg').html('<span class="success">Title is valid!</span>');
+                        } else {
+                            $('#title-validation-msg').html('<span class="error">Title contains invalid characters!</span>');
+                        }
+                    }
+                });
+            } else {
+                $('#title-validation-msg').html('');
+            }
+        });
+    });
+    </script>
+
+
+
+    <h1>Create Post</h1>
+    <form id="post-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="title-validation-msg"></div>
+        {{ formset.as_p }}
+        <button type="submit">Create Post</button>
+    </form>
+
+
+ 
+
+
+
+
+
+{% endblock body %}

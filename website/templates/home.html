@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+    <h1>All Posts</h1>
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h2>{{ post.title }}</h2>
+                    <p>{{ post.content }}</p>
+                    <p>Author: {{ post.author }}</p>
+                    <p>Publication Date: {{ post.pub_date }}</p>
+                    <p>Images:</p>
+                    <ul>
+                        {% for image in post.blogpostimage_set.all %}
+                            <li><img src="{{ image.image.url }}" width="100px"></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts yet.</p>
+    {% endif %}
+
+
+
+{% endblock body %}
